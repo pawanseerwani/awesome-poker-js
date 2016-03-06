@@ -13,6 +13,7 @@ var game  = {
     reset: function(){
       this.cards = []
       this.score = 0
+      this.temp_score = 0
     },
     get_max_card_number: function(){
       var max_card_number = Math.max(
@@ -36,6 +37,7 @@ var game  = {
     reset: function(){
       this.cards = []
       this.score = 0
+      this.temp_score = 0
     },
     get_max_card_number: function(){
       max_card_number = Math.max(
@@ -120,7 +122,7 @@ var game  = {
   },
   get_game_state: function(){ /* [null, 'preflop', 'flop', 'turn', 'river']*/
     total_player_cards_count = this.player_1.cards.length = this.player_2.cards.length
-    table_cards_count = table_cards.length
+    table_cards_count = this.table_cards.length
     if (table_cards_count == 0 && total_player_cards_count == 0)
       state = null
     else if(table_cards_count == 0 && total_player_cards_count !=0 )
@@ -160,7 +162,7 @@ var game  = {
   sort_cards: function(cards){
     return cards.sort(function(a,b){ return game.get_numeric_value(b) - game.get_numeric_value(a)})
   },
-  determine_negotiation_order: function(){
+  get_negotiation_order: function(){
     state = this.get_game_state()
     dealt_states = ['flop', 'turn', 'river']
     negotiation_order = null
@@ -170,6 +172,7 @@ var game  = {
       negotiation_order = get_dealt_cards_negotiation_order()
     else
       alert('Incorrect Game State')
+    return negotiation_order
   },
   get_preflop_negotiation_order: function(){
     var negotiation_order = []
