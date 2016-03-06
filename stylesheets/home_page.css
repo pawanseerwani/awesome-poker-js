@@ -1,0 +1,58 @@
+.container{
+  border: 2px solid black;
+  height: 600px;
+  width: 1000px;
+  margin: auto;
+}
+.float_left{
+  float: left;  
+}
+.clear{
+  clear: both;
+}
+.box{
+  width: 198px;
+  height: 298px;
+  border: 1px solid black;
+  border-bottom-style: dotted;
+  float: left;
+}
+.player_container{
+  height: 300px;
+}
+
+.offer_value, .offer_text{
+  margin: auto;
+  padding: auto;
+  text-align: center;
+  height: 50%;
+}
+.offer_value{
+  position: relative;
+}
+.input_offer_value{
+  position: absolute;
+  bottom: 0px;
+  left: 30px;
+}
+.img_div{
+  height: 100px;
+  margin-top: 100px;
+  margin-left: 15px;
+}
+.dp_div{
+  height: 100px;
+}
+img{
+  max-width:100%;
+  max-height:100%;
+}
+.card{
+  height: 300px;
+  width: 50%;
+}
+.dp_div img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

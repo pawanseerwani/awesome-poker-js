@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Awesome Poker</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/home_page.css">
+  </head>
+  <body>
+    <div class='container'>
+      <div class='player_container p1'>
+        <div class='profile box'>
+          <div class='dp'>
+            <div class='dp_div'> <img src='images/ace_of_spades.png'/> </div>
+          </div>
+          <div class='name'>Pawan Seerwani</div>
+          <div class='score'>Score: 485</div>
+        </div>
+        <div class='make_offer box'>
+          <div class='offer_value'>
+            <div class='input_offer_value'>
+              <input name='make_offer_value' id='p1_make_offer_value'></input>
+            </div>
+          </div>
+          <div class='offer_text'><button id='p1_offer_botton' value='Offer'/>Offer</div>
+        </div>
+        <div class='cards box'>
+          <div class='card_images'>
+            <div class='card card_1 float_left'>
+              <div class='img_div'> <img src='images/ace_of_spades.png'/> </div>
+            </div>
+            <div class='card card_2 float_left'>
+              <div class='img_div'> <img src='images/ace_of_hearts.png'/> </div>
+            </div>
+            <div class='clear'></div>
+          </div>
+        </div>
+        <div class='accept_offer box'>
+          <div class='offer_value'></div>
+          <div class='offer_text'></div>
+        </div>
+        <div class='timer box'></div>
+      </div>
+      <div class='divider'>
+      </div>
+      <div class='player_container p2'>
+        <div class='timer box'></div>
+        <div class='accept_offer box'>
+          <div class='offer_value'></div>
+          <div class='offer_text'></div>
+        </div>
+        <div class='cards box'>
+          <div class='card card_1'></div>
+          <div class='card card_2'></div>
+        </div>
+        <div class='make_offer box'>
+            <div class='offer_value'></div>
+            <div class='offer_text'></div>
+          </div>
+        <div class='profile box'>
+          <div class='picture'></div>
+          <div class='name'></div>
+          <div class='score'></div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src = "js/jquery.min.js"></script>
+  <script src = "js/game.js"></script>
+  <script src = "js/game_activity.js"></script>
+  <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script> -->
+</html>
