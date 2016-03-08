@@ -118,7 +118,7 @@ var game  = {
     else if(digit_regex.test(number))
       numeric_value = parseInt(number)
     else
-      alert('Incorrect card number')
+      debugger//alert('Incorrect card number')
     return numeric_value
   },
   deal_cards: function(){
@@ -136,7 +136,7 @@ var game  = {
     }
     else
     {
-      alert('Player cards have already been dealt. No new cards will be issued')
+      debugger//alert('Player cards have already been dealt. No new cards will be issued')
     }
   },
   deal_table_cards: function(){
@@ -149,7 +149,7 @@ var game  = {
     else if(current_game_state == 'flop' || current_game_state == 'turn')
       this.table_cards = this.table_cards.concat(this.get_random_cards_from_deck(1))
     else
-      alert('Incorrect Deal type')
+      debugger//alert('Incorrect Deal type')
   },
   get_game_state: function(){ /* [null, 'preflop', 'flop', 'turn', 'river']*/
     total_player_cards_count = this.player_1.cards.length = this.player_2.cards.length
@@ -263,6 +263,7 @@ var game  = {
     if (dealt_states.indexOf(state) == -1)
       return -1;
     hand_type = this.get_hand_type(total_cards)
+    //debugger
     return hand_type.rank
   },
   /* <FALTU CODE> :( */

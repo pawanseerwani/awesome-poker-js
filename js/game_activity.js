@@ -58,6 +58,8 @@ var game_activity = {
     game_activity.start_round()
   },
   no_offer: function(){
+    if(game.get_game_state() == 'river')
+      game.finish_hand()
     game_activity.start_round()
   },
   /** <Event Handlers> **/
