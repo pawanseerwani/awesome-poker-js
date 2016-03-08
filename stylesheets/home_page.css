@@ -30,10 +30,15 @@
 .offer_value{
   position: relative;
 }
-.input_offer_value{
+.accept_offer_value, .input_offer_value{
   position: absolute;
   bottom: 0px;
+}
+.input_offer_value{
   left: 30px;
+}
+.accept_offer_value{
+  left: 87px; 
 }
 .img_div{
   height: 100px;

@@ -10,22 +10,30 @@ var game  = {
     cards: [],
     score: 0,
     temp_score: 0,
+    div_class: 'p1',
+    negotiator: null,
+    other_player: null,
+    deal_offered: 0,
     reset: function(){
       this.cards = []
       this.score = 0
       this.temp_score = 0
     },
+    hand_reset: function(){
+      this.cards = []
+      this.temp_score = 0
+    },
     get_max_card_number: function(){
       var max_card_number = Math.max(
-                          this.get_numeric_value(this.cards[0]),
-                          this.get_numeric_value(this.cards[1])
+                          game.get_numeric_value(this.cards[0]),
+                          game.get_numeric_value(this.cards[1])
                         )
       return max_card_number
     },
     get_min_card_number: function(){
       var min_card_number = Math.min(
-                          this.get_numeric_value(this.cards[0]),
-                          this.get_numeric_value(this.cards[1])
+                          game.get_numeric_value(this.cards[0]),
+                          game.get_numeric_value(this.cards[1])
                         )
       return min_card_number
     }
@@ -34,22 +42,27 @@ var game  = {
     cards: [],
     score: 0,
     temp_score: 0,
+    div_class: 'p2',
     reset: function(){
       this.cards = []
       this.score = 0
       this.temp_score = 0
     },
+    hand_reset: function(){
+      this.cards = []
+      this.temp_score = 0
+    },
     get_max_card_number: function(){
       max_card_number = Math.max(
-                          this.get_numeric_value(this.cards[0]),
-                          this.get_numeric_value(this.cards[1])
+                          game.get_numeric_value(this.cards[0]),
+                          game.get_numeric_value(this.cards[1])
                         )
       return max_card_number
     },
     get_min_card_number: function(){
       var min_card_number = Math.min(
-                          this.get_numeric_value(this.cards[0]),
-                          this.get_numeric_value(this.cards[1])
+                          game.get_numeric_value(this.cards[0]),
+                          game.get_numeric_value(this.cards[1])
                         )
       return min_card_number
     }
@@ -108,14 +121,32 @@ var game  = {
       alert('Incorrect card number')
     return numeric_value
   },
-  deal_player_cards: function(){
-    this.player_1.cards = this.get_random_cards_from_deck(2)
-    this.player_2.cards = this.get_random_cards_from_deck(2)
+  deal_cards: function(){
+    current_game_state = this.get_game_state()
+    if(current_game_state == 'new_game')
+      this.deal_player_cards()
+    else
+      this.deal_table_cards()
   },
-  deal_table_cards: function(deal_type){
-    if(deal_type == 'flop')
+  deal_player_cards: function(){
+    if (this.player_1.cards.length == 0 && this.player_2.cards.length == 0)
+    {
+      this.player_1.cards = this.get_random_cards_from_deck(2)
+      this.player_2.cards = this.get_random_cards_from_deck(2)
+    }
+    else
+    {
+      alert('Player cards have already been dealt. No new cards will be issued')
+    }
+  },
+  deal_table_cards: function(){
+    state = this.get_game_state()
+    this.deal_table_cards_with_type(state)
+  },
+  deal_table_cards_with_type: function(current_game_state){
+    if(current_game_state == 'preflop')
       this.table_cards = this.table_cards.concat(this.get_random_cards_from_deck(3))
-    else if(deal_type == 'turn' || deal_type == 'river')
+    else if(current_game_state == 'flop' || current_game_state == 'turn')
       this.table_cards = this.table_cards.concat(this.get_random_cards_from_deck(1))
     else
       alert('Incorrect Deal type')
@@ -124,7 +155,7 @@ var game  = {
     total_player_cards_count = this.player_1.cards.length = this.player_2.cards.length
     table_cards_count = this.table_cards.length
     if (table_cards_count == 0 && total_player_cards_count == 0)
-      state = null
+      state = 'new_game'
     else if(table_cards_count == 0 && total_player_cards_count !=0 )
       state = 'preflop'
     else if(table_cards_count == 3)
@@ -133,16 +164,27 @@ var game  = {
       state = 'turn'
     else if(table_cards_count == 5)
       state = 'river'
-    else 
-      alert('Incorrect Game State')
+    else
+      debugger//alert('Incorrect Game State')
 
     return state
   },
-  finish_round: function(p1, p1_points, p2, p2_points){
-    if (p1_points + p2_points != 100)
-      alert('Incorrect points distribution')
+  init_hand: function(){
+    game.player_1.hand_reset()
+    game.player_2.hand_reset()
+    game.table_cards = []
+    game.deck_cards = this.get_all_cards()
+  },
+  finish_hand: function(p1, p1_points, p2, p2_points){
+    p1 = game.other_player
+    p1_points = game.deal_offered
+    p2 = game.negotiator
+    p2_points = 100 - p1_points
+
     p1.score += p1_points
     p2.score += p2_points
+
+    game.init_hand()
   },
   tie_breaker: function(p1, p2){
     var negotiation_order = []
@@ -167,39 +209,44 @@ var game  = {
     dealt_states = ['flop', 'turn', 'river']
     negotiation_order = null
     if(state == 'preflop')
-      negotiation_order = get_preflop_negotiation_order()
+      negotiation_order = this.get_preflop_negotiation_order()
     else if(dealt_states.indexOf(state) > -1)
-      negotiation_order = get_dealt_cards_negotiation_order()
+      negotiation_order = this.get_dealt_cards_negotiation_order()
     else
-      alert('Incorrect Game State')
+      debugger//alert('Incorrect Game State')
+
+    this.negotiator = negotiation_order[0]
+    this.other_player = negotiation_order[1]
     return negotiation_order
   },
   get_preflop_negotiation_order: function(){
     var negotiation_order = []
+    player_1 = this.player_1
+    player_2 = this.player_2
     players = [player_1, player_2]
     for( i in players){
       player = players[i]
       player.temp_score = 0
       if(player.cards.length == 2){
         max_card_number = player.get_max_card_number()
-        if(player.cards[0].number = player.cards[1].number)
-          player.temp_score += 15
+        min_card_number = player.get_min_card_number()
+        if(player.cards[0].number == player.cards[1].number)
+          player.temp_score += 150
         if(player.cards[0].suit == player.cards[1].suit)
           player.temp_score += 0.5
-        player.temp_score += max_card_number
+        player.temp_score += (max_card_number*15 + min_card_number)
       }
     }
     if(player_1.temp_score >= player_2.temp_score)
       negotiation_order = [player_1, player_2]
     else
       negotiation_order = [player_2, player_1]
-
     return negotiation_order
   },
   get_dealt_cards_negotiation_order: function(){
     var negotiation_order = []
-    p1_rank = get_hand_strength(player_1)
-    p2_rank = get_hand_strength(player_2)
+    p1_rank = this.get_hand_strength(player_1)
+    p2_rank = this.get_hand_strength(player_2)
     if(p1_rank > p2_rank)
       negotiation_order = [player_1, player_2]
     else if(p1_rank < p2_rank)
@@ -211,11 +258,11 @@ var game  = {
   },
   get_hand_strength: function(player){
     state = this.get_game_state()
-    total_cards = this.deal_table_cards.concat(player.cards)
+    total_cards = this.table_cards.concat(player.cards)
     dealt_states = ['flop', 'turn', 'river']
     if (dealt_states.indexOf(state) == -1)
       return -1;
-    hand_type = get_hand_type(total_cards)
+    hand_type = this.get_hand_type(total_cards)
     return hand_type.rank
   },
   /* <FALTU CODE> :( */
